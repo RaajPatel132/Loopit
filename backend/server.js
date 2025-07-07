@@ -1,9 +1,10 @@
-const express = require('express');
-const cors = require('cors');
-require('dotenv').config();
+const express = require("express");
+const cors = require("cors");
+require("dotenv").config();
 
-const { connectDB } = require('./config/database');
-const authRoutes = require('./routes/auth');
+const { connectDB } = require("./config/database");
+const authRoutes = require("./routes/auth");
+const orgRoutes = require("./routes/organization");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -11,41 +12,45 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+    origin: process.env.FRONTEND_URL || "http://localhost:3000",
     credentials: true,
   })
 );
 
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
+
+// Serve static files from uploads directory
+app.use("/uploads", express.static("uploads"));
 
 // Routes
-app.use('/api/auth', authRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/organizations", orgRoutes);
 
 // Health check endpoint
-app.get('/api/health', (req, res) => {
+app.get("/api/health", (_, res) => {
   res.json({
     success: true,
-    message: 'Server is running',
+    message: "Server is running",
     timestamp: new Date().toISOString(),
   });
 });
 
 // Global error handler
 app.use((err, req, res, next) => {
-  console.error('Global error handler:', err);
+  console.error("Global error handler:", err);
   res.status(500).json({
     success: false,
-    message: 'Something went wrong!',
-    error: process.env.NODE_ENV === 'development' ? err.message : undefined,
+    message: "Something went wrong!",
+    error: process.env.NODE_ENV === "development" ? err.message : undefined,
   });
 });
 
 // 404 handler
-app.use('*', (req, res) => {
+app.use("*", (req, res) => {
   res.status(404).json({
     success: false,
-    message: 'Route not found',
+    message: "Route not found",
   });
 });
 
@@ -59,7 +64,7 @@ const startServer = async () => {
       console.log(`🔗 Health check: http://localhost:${PORT}/api/health`);
     });
   } catch (error) {
-    console.error('❌ Failed to start server:', error);
+    console.error("❌ Failed to start server:", error);
     process.exit(1);
   }
 };
