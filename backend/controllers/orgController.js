@@ -1,5 +1,3 @@
-// fix: converted to ES module syntax and exported createOrganization
-
 const Organization = require("../models/Organization.js");
 const { cleanupUploadedFile } = require("../utils/fileUtils.js");
 

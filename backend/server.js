@@ -5,6 +5,7 @@ require("dotenv").config();
 const { connectDB } = require("./config/database");
 const authRoutes = require("./routes/auth");
 const orgRoutes = require("./routes/organization");
+const projRoutes = require("./routes/project");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -26,6 +27,7 @@ app.use("/uploads", express.static("uploads"));
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/organizations", orgRoutes);
+app.use("/api/projects", projRoutes);
 
 // Health check endpoint
 app.get("/api/health", (_, res) => {

@@ -13,7 +13,7 @@ const {
   validateRegister,
   validateLogin,
   validatePasswordChange
-} = require('../middleware/validation');
+} = require('../middleware/authValidation');
 
 // Public routes
 router.post('/register', validateRegister, register);

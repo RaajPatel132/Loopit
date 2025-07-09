@@ -53,7 +53,7 @@ const upload = multer({
 });
 
 const { authenticate } = require("../middleware/auth");
-const { validateCreateOrg } = require("../middleware/validation");
+const { validateCreateOrg } = require("../middleware/orgValidation");
 
 router.post(
   "/create",
